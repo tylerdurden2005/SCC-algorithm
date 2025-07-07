@@ -1,7 +1,7 @@
 package algorithm.graph;
 import com.google.gson.annotations.Expose;
 
-public class Vertex {
+public class Vertex extends Element {
     @Expose
     private int id;
     @Expose
@@ -11,13 +11,12 @@ public class Vertex {
     @Expose
     private double y;
     @Expose
-    private Color color;
+    private CustomColor color;
     private int entry_time;
     private int exit_time;
     private int stack_number;
     private int SCC_number;
-
-    public Vertex() {}
+    private int bypass_number;
 
     public Vertex(int id, String label, double x, double y){
         this.id = id;
@@ -27,19 +26,7 @@ public class Vertex {
         this.entry_time = 0;
         this.exit_time = 0;
         this.stack_number = 0;
-        this.color = Color.WHITE;
-        this.SCC_number = 0;
-    }
-
-    public Vertex(int id, String label){
-        this.id = id;
-        this.label = label;
-        this.x = 0.0;
-        this.y = 0.0;
-        this.entry_time = 0;
-        this.exit_time = 0;
-        this.stack_number = 0;
-        this.color = Color.WHITE;
+        this.color = CustomColor.WHITE;
         this.SCC_number = 0;
     }
 
@@ -51,7 +38,7 @@ public class Vertex {
         this.entry_time = 0;
         this.exit_time = 0;
         this.stack_number = 0;
-        this.color = Color.WHITE;
+        this.color = CustomColor.WHITE;
         this.SCC_number = 0;
     }
 
@@ -65,10 +52,6 @@ public class Vertex {
 
     public double getY(){
         return y;
-    }
-
-    public double[] getCoordinate(){
-        return new double[]{x, y};
     }
 
     public void setId(int id){
@@ -87,11 +70,7 @@ public class Vertex {
         return entry_time;
     }
 
-    public int getExitTime(){
-        return exit_time;
-    }
-
-    public Color getColor(){
+    public CustomColor getColor(){
         return color;
     }
 
@@ -103,12 +82,8 @@ public class Vertex {
         this.exit_time = exit_time;
     }
 
-    public void setColor(Color color) {
+    public void setColor(CustomColor color) {
         this.color = color;
-    }
-
-    public int getStackNumber(){
-        return stack_number;
     }
 
     public void setStackNumber(int stack_number){
@@ -129,5 +104,13 @@ public class Vertex {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public int getBypassNumber(){
+        return bypass_number;
+    }
+
+    public void setBypassNumber(int bypass_number) {
+        this.bypass_number = bypass_number;
     }
 }
