@@ -1,20 +1,22 @@
 package algorithm.graph;
 
 import java.util.ArrayList;
+
+import algorithm.StepwiseExecution;
 import com.google.gson.annotations.Expose;
 
-public class Graph {
+public class Graph extends Element {
     @Expose
-    ArrayList <Edge> edges;
+    private ArrayList <Edge> edges;
     @Expose
-    ArrayList <Vertex> vertexes;
-
-    public Graph() {}
+    private ArrayList <Vertex> vertexes;
+    private StepwiseExecution steps;
 
     public Graph(ArrayList<Edge> edges, ArrayList<Vertex> vertexes){
         this.edges = edges;
         this.vertexes = vertexes;
         sortLists();
+        this.steps = new StepwiseExecution();
     }
 
     public void sortLists(){
@@ -52,19 +54,16 @@ public class Graph {
         });
     }
 
-    public void printGraph(){
-        System.out.println("vertexes:");
-        for (Vertex v : vertexes){
-            System.out.println(v.getId() + " (in: " + v.getEntryTime() + ", out: " + v.getExitTime() +
-                    ", stack: " + v.getStackNumber() + ", color: " + v.getColor() + ", SCC: " + v.getSCCNumber() + ", coord: (" +
-                    v.getX() + ", " + v.getY() + "))");
-        }
-        System.out.println("\nedges:");
-        for (Edge e : edges){
-            System.out.println("(" + e.getSource() + ", " + e.getTarget() + ") type: " + e.getEdgeType());
-        }
-        System.out.println();
+    public StepwiseExecution getSteps(){
+        return steps;
     }
 
-
+    public void transpose(){
+        for (Edge e : edges){
+            int source = e.getSource();
+            int target = e.getTarget();
+            e.setSource(target);
+            e.setTarget(source);
+        }
+    }
 }

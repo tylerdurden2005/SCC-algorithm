@@ -1,19 +1,17 @@
 package algorithm.graph;
 import com.google.gson.annotations.Expose;
 
-public class Edge {
+public class Edge extends Element {
     @Expose
     private int source;
     @Expose
     private int target;
     @Expose
-    private Color color;
+    private CustomColor color;
     @Expose
     private EdgeType edge_type;
 
-    public Edge() {}
-
-    public Edge(int source, int target, Color color){
+    public Edge(int source, int target, CustomColor color){
         this.source = source;
         this.target = target;
         this.color = color;
@@ -23,7 +21,7 @@ public class Edge {
     public Edge(int source, int target){
         this.source = source;
         this.target = target;
-        this.color = Color.BLACK;
+        this.color = CustomColor.BLACK;
         this.edge_type = EdgeType.NONE;
     }
 
@@ -35,7 +33,7 @@ public class Edge {
         return target;
     }
 
-    public Color getColor(){
+    public CustomColor getColor(){
         return color;
     }
 
@@ -47,5 +45,13 @@ public class Edge {
         if (this.edge_type == EdgeType.NONE) {
             this.edge_type = edge_type;
         }
+    }
+
+    public void setSource(int source) {
+        this.source = source;
+    }
+
+    public void setTarget(int target) {
+        this.target = target;
     }
 }

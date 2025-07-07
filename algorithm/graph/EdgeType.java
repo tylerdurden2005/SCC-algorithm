@@ -4,6 +4,6 @@ public enum EdgeType {
     NONE,
     TREE,       // древесное
     BACK,       // обратное
-    FORWARD,    // прямое
+    FORWARD,    // направленное вперед
     CROSS       // поперечное
 }
