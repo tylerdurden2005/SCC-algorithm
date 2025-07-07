@@ -1,7 +1,9 @@
 package application;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -20,6 +22,11 @@ public class CustomInterface {
     private  BorderPane answer;
     private BorderPane log;
     private Pane graphCanvas;
+
+    private String editStyle;
+    private String fileStyle;
+    private String playStyle;
+    private String resultStyle;
 
     public CustomInterface(){
         createGridPane();
@@ -79,7 +86,6 @@ public class CustomInterface {
         scrollPane.setContent(contentPane);
 
         Image playImage = new Image(Objects.requireNonNull(CustomInterface.class.getResourceAsStream("play.png")));
-        Image pauseImage = new Image(Objects.requireNonNull(CustomInterface.class.getResourceAsStream("pause.png")));
         ImageView imageView = new ImageView(playImage);
         imageView.setFitWidth(27);
         imageView.setFitHeight(27);
@@ -99,16 +105,7 @@ public class CustomInterface {
                         "-fx-border-width: 4px; " +
                         "-fx-border-radius: 50%;"
         );
-        final boolean[] flagPlay = {false};
-        playButton.setOnAction(e -> {
-            if (!flagPlay[0]) {
-                imageView.setImage(playImage);
-                flagPlay[0] = true;
-            } else {
-                imageView.setImage(pauseImage);
-                flagPlay[0] = false;
-            }
-        });
+        playStyle = playButton.getStyle();
 
         stackPane.getChildren().addAll(scrollPane, playButton);
 
@@ -142,14 +139,17 @@ public class CustomInterface {
                         "-fx-border-radius: 5px;" +
                         "-fx-background-radius: 5px;";
 
+        editStyle = buttonStyle;
         for (Button button : Arrays.asList(fastResult, stepsResult, addVertex, addEdge, deleteSmth, deleteAll, saveGraph, loadGraph)) {
             button.setStyle(buttonStyle);
             String text = button.getText();
             if (text.equals("Получить результат") || text.equals("Выполнить по шагам")){
                 button.setStyle(button.getStyle()+"-fx-background-color: #0c98df;");
+                resultStyle = button.getStyle();
             }
             if (text.equals("Сохранить граф") || text.equals("Загрузить граф")){
                 button.setStyle(button.getStyle()+"-fx-background-color: #d3effd;");
+                fileStyle = button.getStyle();
             }
             button.setMaxWidth(Double.MAX_VALUE);
             button.setMaxHeight(Double.MAX_VALUE);
@@ -159,6 +159,7 @@ public class CustomInterface {
 
         return vbox;
     }
+
     private BorderPane textProgramArea(String name){
         BorderPane borderPane = new BorderPane();
 
@@ -175,11 +176,11 @@ public class CustomInterface {
 
         borderPane.setTop(titleLabel);
 
-        TextArea answer = new TextArea();
-        answer.setEditable(false);
-        answer.setWrapText(true);
-        //answer.setFocusTraversable(false);
-        answer.setStyle(
+        TextArea text_area = new TextArea();
+        text_area.setEditable(false);
+        text_area.setWrapText(true);
+
+        text_area.setStyle(
                 "-fx-background-color: white;" +
                         "-fx-background-radius: 8;" +
                         "-fx-border-color: #0575ad;" +
@@ -191,7 +192,21 @@ public class CustomInterface {
                         "-fx-cursor: default;"
         );
 
-        borderPane.setCenter(answer);
+        if (name.equals("ЛОГ:")){
+            text_area.textProperty().addListener((observable, oldValue, newValue) -> {
+                Platform.runLater(() -> {
+                    boolean atBottom = text_area.getScrollTop() + text_area.getHeight() >=
+                            text_area.getMaxHeight() - 10;
+
+                    if (atBottom) {
+                        text_area.positionCaret(text_area.getText().length());
+                        text_area.setScrollTop(Double.MAX_VALUE);
+                    }
+                });
+            });
+        }
+
+        borderPane.setCenter(text_area);
         return borderPane;
     }
 
@@ -217,5 +232,21 @@ public class CustomInterface {
 
     public Pane getGraphCanvas(){
         return graphCanvas;
+    }
+
+    public String giveEditStyle(){
+        return editStyle;
+    }
+
+    public String giveFileStyle(){
+        return fileStyle;
+    }
+
+    public String givePlayStyle(){
+        return playStyle;
+    }
+
+    public String giveResultStyle(){
+        return resultStyle;
     }
 }
